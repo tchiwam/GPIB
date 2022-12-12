@@ -17,8 +17,12 @@ class gpibeth:
         self.timeout = timeout
         self.s.settimeout(timeout)
 
-    def read(self):
+    def read(self, eoi=""):
         data = self.s.recv(4096).decode().strip()
+        if eoi != "":
+            while data[-len(eoi):] != eoi:
+                data = data + self.s.recv(4096).decode()
+            data = data.strip()
         if self.verbose:
             print(f"IN << {data:s}")
         return data
@@ -34,9 +38,9 @@ class gpibeth:
         self.send(f'++addr {addr:02d}')
         self.getvalue('++addr')
         
-    def getvalue(self,command):
+    def getvalue(self,command,eoi=""):
         self.send(command)
-        data = self.read()
+        data = self.read(eoi=eoi)
         return data
 
     def connect(self):
