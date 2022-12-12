@@ -1,6 +1,6 @@
 import socket, select, string, sys
 
-GPIBHOST = "192.168.0.118"
+GPIBHOST = "172.20.0.50"
 GPIBPORT = 1234
 GPIBADDR = 25
 
